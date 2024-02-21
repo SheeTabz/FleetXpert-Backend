@@ -81,7 +81,7 @@ test:
 #
 production:
   <<: *default
-  # url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV["DATABASE_URL"] %>
   database: FleetXpert_Backend_production
   username: FleetXpert_Backend
   password: <%= ENV["FLEETXPERT_BACKEND_DATABASE_PASSWORD"] %>
