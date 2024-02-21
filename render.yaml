@@ -1,7 +1,7 @@
 databases:
   - name: postgres
     ipAllowList: []
-    databaseName: fleetXpert_backend
+    databaseName: FleetXpert_Backend
     user: tabz
 
 services:
