@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_22_135753) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_22_140106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,6 +70,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_22_135753) do
     t.string "fuel_type_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "refuel_entries", force: :cascade do |t|
+    t.string "fuel_amount"
+    t.integer "odometer_reading_at_refuelling"
+    t.date "fuel_entry_date"
+    t.integer "units_taken"
+    t.string "refuel_place"
+    t.bigint "vehicle_id", null: false
+    t.bigint "fuel_type_id", null: false
+    t.bigint "fuel_station_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fuel_station_id"], name: "index_refuel_entries_on_fuel_station_id"
+    t.index ["fuel_type_id"], name: "index_refuel_entries_on_fuel_type_id"
+    t.index ["vehicle_id"], name: "index_refuel_entries_on_vehicle_id"
   end
 
   create_table "routes", force: :cascade do |t|
@@ -133,6 +149,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_22_135753) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "refuel_entries", "fuel_stations"
+  add_foreign_key "refuel_entries", "fuel_types"
+  add_foreign_key "refuel_entries", "vehicles"
   add_foreign_key "vehicle_assignments", "drivers"
   add_foreign_key "vehicle_assignments", "routes"
   add_foreign_key "vehicle_assignments", "vehicles"

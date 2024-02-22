@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :refuel_entries
   resources :users
   resources :fuel_stations
   resources :fuel_types

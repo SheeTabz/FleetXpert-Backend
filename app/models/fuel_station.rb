@@ -1,3 +1,3 @@
 class FuelStation < ApplicationRecord
-    has_many :refuelling_settings
+    has_many :refuel_entries
 end
