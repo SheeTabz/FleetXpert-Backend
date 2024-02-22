@@ -1,5 +1,6 @@
 class VehiclesController < ApplicationController
   before_action :set_vehicle, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /vehicles
   def index
@@ -15,7 +16,7 @@ class VehiclesController < ApplicationController
 
   # POST /vehicles
   def create
-    @vehicle = Vehicle.new(vehicle_params)
+    @vehicle = Vehicle.create(vehicle_params)
 
     if @vehicle.save
       render json: @vehicle, status: :created, location: @vehicle
@@ -40,6 +41,10 @@ class VehiclesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def render_not_found_response
+      render json: { error: "Vehicle not found" }, status: :not_found
+    end
+
     def set_vehicle
       @vehicle = Vehicle.find(params[:id])
     end
