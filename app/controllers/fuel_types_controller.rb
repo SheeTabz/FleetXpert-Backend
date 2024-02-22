@@ -1,5 +1,6 @@
 class FuelTypesController < ApplicationController
   before_action :set_fuel_type, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /fuel_types
   def index
@@ -15,7 +16,7 @@ class FuelTypesController < ApplicationController
 
   # POST /fuel_types
   def create
-    @fuel_type = FuelType.new(fuel_type_params)
+    @fuel_type = FuelType.create(fuel_type_params)
 
     if @fuel_type.save
       render json: @fuel_type, status: :created, location: @fuel_type
@@ -40,6 +41,11 @@ class FuelTypesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def render_not_found_response
+      render json: { error: "Fuel type not found" }, status: :not_found
+    end
+
     def set_fuel_type
       @fuel_type = FuelType.find(params[:id])
     end
