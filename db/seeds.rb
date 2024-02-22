@@ -10,3 +10,4 @@ vehicle_type = VehicleType.create(vehicle_type_name: "Matatu")
 vehicle_type = VehicleType.create(vehicle_type_name: "Manyanga")
 vehicle_type = VehicleType.create(vehicle_type_name: "Mini Bus")
 
+route = Route.create(to: "Buru", from: "Town")
