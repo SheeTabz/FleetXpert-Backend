@@ -1,5 +1,6 @@
 class FuelStationsController < ApplicationController
   before_action :set_fuel_station, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /fuel_stations
   def index
@@ -15,7 +16,7 @@ class FuelStationsController < ApplicationController
 
   # POST /fuel_stations
   def create
-    @fuel_station = FuelStation.new(fuel_station_params)
+    @fuel_station = FuelStation.create(fuel_station_params)
 
     if @fuel_station.save
       render json: @fuel_station, status: :created, location: @fuel_station
@@ -40,6 +41,11 @@ class FuelStationsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def render_not_found_response
+      render json: { error: "Fuel station not found" }, status: :not_found
+    end
+    
+
     def set_fuel_station
       @fuel_station = FuelStation.find(params[:id])
     end
