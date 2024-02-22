@@ -1,5 +1,6 @@
 class RefuelEntriesController < ApplicationController
   before_action :set_refuel_entry, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /refuel_entries
   def index
@@ -15,7 +16,7 @@ class RefuelEntriesController < ApplicationController
 
   # POST /refuel_entries
   def create
-    @refuel_entry = RefuelEntry.new(refuel_entry_params)
+    @refuel_entry = RefuelEntry.create(refuel_entry_params)
 
     if @refuel_entry.save
       render json: @refuel_entry, status: :created, location: @refuel_entry
@@ -40,6 +41,10 @@ class RefuelEntriesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def render_not_found_response
+      render json: { error: "Fuel entry not found" }, status: :not_found
+    end
+
     def set_refuel_entry
       @refuel_entry = RefuelEntry.find(params[:id])
     end
