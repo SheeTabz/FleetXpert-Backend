@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_of_trips: 1
+  start_Time: 2024-02-22 12:13:38
+  end_time: 2024-02-22 12:13:38
+  trip_date: 2024-02-22
+  amount_earned: MyString
+  vehicle: one
+
+two:
+  no_of_trips: 1
+  start_Time: 2024-02-22 12:13:38
+  end_time: 2024-02-22 12:13:38
+  trip_date: 2024-02-22
+  amount_earned: MyString
+  vehicle: two
