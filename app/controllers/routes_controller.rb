@@ -1,5 +1,6 @@
 class RoutesController < ApplicationController
   before_action :set_route, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /routes
   def index
@@ -15,7 +16,7 @@ class RoutesController < ApplicationController
 
   # POST /routes
   def create
-    @route = Route.new(route_params)
+    @route = Route.create(route_params)
 
     if @route.save
       render json: @route, status: :created, location: @route
@@ -40,6 +41,10 @@ class RoutesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def render_not_found_response
+      render json: { error: "Route not found" }, status: :not_found
+    end
+
     def set_route
       @route = Route.find(params[:id])
     end
