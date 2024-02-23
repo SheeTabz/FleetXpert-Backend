@@ -1,5 +1,7 @@
 class DriversController < ApplicationController
   before_action :set_driver, only: %i[ show update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+
 
   # GET /drivers
   def index
@@ -15,7 +17,7 @@ class DriversController < ApplicationController
 
   # POST /drivers
   def create
-    @driver = Driver.new(driver_params)
+    @driver = Driver.create(driver_params)
 
     if @driver.save
       render json: @driver, status: :created, location: @driver
@@ -40,6 +42,10 @@ class DriversController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def render_not_found_response
+      render json: { error: "Driver not found" }, status: :not_found
+    end
+
     def set_driver
       @driver = Driver.find(params[:id])
     end
