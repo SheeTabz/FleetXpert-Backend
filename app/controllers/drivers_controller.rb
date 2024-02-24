@@ -40,6 +40,11 @@ class DriversController < ApplicationController
     @driver.destroy
   end
 
+  def profile
+    @driver = Driver.last.to_json(include: [:image])
+    render json: @driver
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def render_not_found_response
@@ -52,6 +57,6 @@ class DriversController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def driver_params
-      params.require(:driver).permit(:driver_name, :email, :mobile, :national_id, :license_no, :license_type, :license_issue_date, :date_of_birth, :address, :joining_date, :user_id)
+      params.require(:driver).permit(:driver_name, :email, :mobile, :national_id, :license_no, :license_type, :license_issue_date, :date_of_birth, :address, :joining_date, :user_id, :image)
     end
 end
