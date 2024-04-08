@@ -10,13 +10,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.find_by(id: session[:user_id])
 
-    if @user
-    render json: @user
-    else 
-      render json: {error: 'User not found'}, status: :not_found
-    end
   end
 
   # POST /users
@@ -24,10 +18,13 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
 
     if @user.valid?
-      session[:user_id] = @user.id
-      render json: user, status: :created, location: @user
+      # session[:user_id] = @user.id
+      token=encode_token({user_id: @user.id})
+
+      # render json: @user, status: :created, location: @user
+      render json:{user: @user,token: token},status: :ok
     else
-      render json: {errors: user.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: @user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -55,6 +52,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation))
+      params.permit(:name, :email, :username, :phone, :company_name, :password, :password_confirmation)
     end
 end

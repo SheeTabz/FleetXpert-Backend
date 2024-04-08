@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_07_142351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "driver_report_services", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "drivers", force: :cascade do |t|
     t.string "driver_name"
     t.string "email"
@@ -66,6 +71,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
     t.string "contact_phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_fuel_stations_on_user_id"
   end
 
   create_table "fuel_types", force: :cascade do |t|
@@ -97,6 +104,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "token_blacklists", force: :cascade do |t|
+    t.string "token"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -118,6 +132,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
     t.index ["driver_id"], name: "index_vehicle_assignments_on_driver_id"
     t.index ["route_id"], name: "index_vehicle_assignments_on_route_id"
     t.index ["vehicle_id"], name: "index_vehicle_assignments_on_vehicle_id"
+  end
+
+  create_table "vehicle_report_services", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "vehicle_trip_report_services", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "vehicle_trips", force: :cascade do |t|
@@ -157,6 +181,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_115856) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "drivers", "users"
+  add_foreign_key "fuel_stations", "users"
   add_foreign_key "refuel_entries", "fuel_stations"
   add_foreign_key "refuel_entries", "fuel_types"
   add_foreign_key "refuel_entries", "vehicles"

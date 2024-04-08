@@ -4,7 +4,9 @@ class VehicleTripsController < ApplicationController
 
   # GET /vehicle_trips
   def index
-    @vehicle_trips = VehicleTrip.all
+    user_id = params[:user_id]
+    @vehicle_trips = VehicleTrip.joins(vehicle: :user).where(users: { id: user_id })
+    # @vehicle_trips = VehicleTrip.all
 
     render json: @vehicle_trips
   end

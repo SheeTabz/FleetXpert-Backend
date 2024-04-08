@@ -4,4 +4,6 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_trips
   has_many :refuel_entries
   has_one :vehicle_assignment
+  # has_one :driver, through: :vehicle_assignment
+
 end

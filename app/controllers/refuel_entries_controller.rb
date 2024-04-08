@@ -4,9 +4,14 @@ class RefuelEntriesController < ApplicationController
 
   # GET /refuel_entries
   def index
-    @refuel_entries = RefuelEntry.all
-
+    user_id = params[:user_id]
+    @refuel_entries = RefuelEntry.joins(:vehicle)
+                                   .where('vehicles.user_id = ?', user_id)
+   
     render json: @refuel_entries
+    # @refuel_entries = RefuelEntry.all
+
+    # render json: @refuel_entries
   end
 
   # GET /refuel_entries/1

@@ -5,8 +5,11 @@ class DriversController < ApplicationController
 
   # GET /drivers
   def index
-    @drivers = Driver.all
-
+  
+ 
+    user_id = params[:user_id]
+    @drivers = Driver.where(user_id: user_id)
+    # @drivers = Driver.all
     render json: @drivers
   end
 
@@ -24,6 +27,10 @@ class DriversController < ApplicationController
     else
       render json: @driver.errors, status: :unprocessable_entity
     end
+
+  #   if params[:image].present?
+  #     @driver.image.attach(params[:image])
+  # end
   end
 
   # PATCH/PUT /drivers/1
@@ -40,10 +47,10 @@ class DriversController < ApplicationController
     @driver.destroy
   end
 
-  def profile
-    @driver = Driver.last.to_json(include: [:image])
-    render json: @driver
-  end
+  # def profile
+  #   @driver = Driver.last.to_json(include: [:image])
+  #   render json: @driver
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -57,6 +64,6 @@ class DriversController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def driver_params
-      params.require(:driver).permit(:driver_name, :email, :mobile, :national_id, :license_no, :license_type, :license_issue_date, :date_of_birth, :address, :joining_date, :user_id, :image)
+      params.permit(:driver_name, :email, :mobile, :national_id, :license_no, :license_type, :license_issue_date, :date_of_birth, :address, :joining_date, :user_id)
     end
 end

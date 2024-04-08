@@ -4,7 +4,9 @@ class VehiclesController < ApplicationController
 
   # GET /vehicles
   def index
-    @vehicles = Vehicle.all
+    user_id = params[:user_id]
+    @vehicles = Vehicle.where(user_id: user_id)
+    # @vehicles = Vehicle.all
 
     render json: @vehicles
   end

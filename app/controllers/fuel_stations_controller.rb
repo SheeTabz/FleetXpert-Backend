@@ -4,7 +4,9 @@ class FuelStationsController < ApplicationController
 
   # GET /fuel_stations
   def index
-    @fuel_stations = FuelStation.all
+    user_id = params[:user_id]
+ @fuel_stations = FuelStation.where(user_id: user_id)
+    # @fuel_stations = FuelStation.all
 
     render json: @fuel_stations
   end
@@ -52,6 +54,6 @@ class FuelStationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def fuel_station_params
-      params.require(:fuel_station).permit(:station_name, :station_code, :contact_name, :contact_phone)
+      params.require(:fuel_station).permit(:station_name, :station_code, :contact_name, :contact_phone, :user_id)
     end
 end

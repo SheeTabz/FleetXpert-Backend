@@ -1,10 +1,12 @@
 class SessionsController < ApplicationController
 
  def create 
-        user = User.find_by(name: params[:name])
-    if user&.authenticate(params[:password])
-      session[:user_id] = user.id
-      render json: user, status: :created
+    @user = User.find_by(username: params[:username])
+    if @user&.authenticate(params[:password])
+     token=encode_token({user_id: @user.id})
+   
+      render json:{user:@user,token: token},status: :ok
+   
     else
       render json: { error: "Invalid username or password" }, status: :unauthorized
     end
@@ -12,8 +14,10 @@ class SessionsController < ApplicationController
  end
 
  def destroy
-    return render json: {errors: ["Invalid name or password"]}, status: :unauthorized unless session.include? :user_id
-    session.delete(:user_id)
-    head:no_content
- end
+  token = request.headers['Authorization'].split(' ').last if request.headers['Authorization']
+  TokenBlacklist.create(token: token, expires_at: 1.hour.from_now) if token
+  head :no_content
+end
+
+
 end

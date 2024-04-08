@@ -1,3 +1,3 @@
 class FuelStationSerializer < ActiveModel::Serializer
-  attributes :id, :station_name, :station_code, :contact_name, :contact_phone
+  attributes :id, :station_name, :station_code, :contact_name, :contact_phone,:user_id
 end
